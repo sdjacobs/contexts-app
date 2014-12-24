@@ -8,5 +8,8 @@ define(function (require) {
     // full IDs, like:
     var print = require('print');
 
+    var d3 = require('d3');
+    d3.select("#gobaby").on("click", function() { alert("hello")})
+
     print(messages.getHello());
 });

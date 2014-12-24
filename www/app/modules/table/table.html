@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<select id="t_dataFile">
+    <option>brown-contexts.json</option>
+</select><br>
+<input type="text" id="t_selectedWords"> <br>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<script>
+(function() {
+
+
+d3.json("data/brown-contexts.json", main);
+
+
+document.getElementById("t_dataFile").onchange = function(evt) {
+    var file = "data/" + evt.target.value
+    d3.json(file, main);
+}
+
+function main(contexts) {
+
+    var table = d3.select(window.viz).select("table");
+
+    if (table.empty()) {
+        table = d3.select(window.viz).append("table")
+        table.append("thead").html("Shared contexts: <span id=t_wordList>");
+    }
+
+    d3.select("#t_selectedWords")
+        .on("change", function() {
+            var d = d3.event.target.value;
+            updateTable(d.split(','));
+        });
+
+    window.dispatch.on("import", function(d) {
+        updateTable(d.value);
+    });
+    
+    /* Intersect lists - must be sorted */
+    function intersect(x, y) {
+        var i = 0
+        var j = 0
+        var z = []
+        while(i < x.length && j < y.length) {
+            if (x[i] == y[j])
+                z.push(x[i]);
+            if (x[i] < y[j])
+                i++;
+            else
+            j++;
+    }
+    return z;
+    }
+
+    function intersectAll(L) {
+        var x = L[0]
+        for (i = 1; i < L.length; i++) {
+            x = intersect(x, L[i])
+        }
+        return x;
+    }
+
+    function updateTable(words) {
+        table.select("#t_wordList").text(words);
+        table.selectAll("tr").remove();
+        var contextsLists = words.map(function(d) { return contexts[d] });
+        var sharedContexts = intersectAll(contextsLists);
+        table.selectAll("tr")
+           .data(sharedContexts).enter()
+           .append("tr")
+           .text(function(d) { return d });
+    }
+
+}
+
+})();
+
+
+</script>
