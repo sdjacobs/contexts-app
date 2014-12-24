@@ -1,0 +1,22 @@
+[
+    {
+        
+        "name": "Graph",
+        "page": "modules/graph/graph.html",
+        "imports": [],
+        "exports": ["wordlist"],
+        "height": 1000,
+        "width": 1000
+
+    },
+    {
+        "name": "Table",
+        "page": "modules/table/table.html",
+        "imports": ["wordlist"],
+        "exports": [],
+        "height": 400,
+        "width": 200
+    }
+]
+
+            
