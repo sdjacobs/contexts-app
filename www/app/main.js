@@ -84,7 +84,7 @@ define(function (require) {
             var viz = d3.select("body")
                         .append("div")
                         .attr("class", "draggable")
-                        .attr("style", "width:500px;height:500px")
+                        .attr("style", "width:500px;height:500px;position:absolute;right:0;top:0;")
             
             var v = viz
                         .append("div")

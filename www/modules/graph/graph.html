@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<select id="dataFile">
+        <option selected disabled hidden value=''></option>
+        <option>english-brown_50_9_nearest_neighbors.txt</option>
+        <option>english-brown_100_9_nearest_neighbors.txt</option>
+        <option>english-brown_1000_9_nearest_neighbors.txt</option>
+</select><br>
+
+<button type="button" id="startGraph">Start</button> <br>
+<button type="button" id="stopGraph">Stop</button><br>
+<button type="button" id="centerGraph">Center</button> <br>
+<select id="graphType">
+    <option value="canvas">Canvas</option>
+    <option value="svg">SVG</option>
+</select> <br>
+<input type="checkbox" id="drawLabels">Draw labels</input> <br>
+Find: <input type="text" id="searchBox"></input> <br>
+<ul id="selectedNodes"></ul>
+<ul id="neighbors"></ul>
+
+
+
+
