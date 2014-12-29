@@ -1,6 +1,4 @@
-
-define(['d3'], function (d3) {
-    function graphCanvas() {
+function graphCanvas() {
     
 
     var nodes = undefined,
@@ -209,5 +207,23 @@ define(['d3'], function (d3) {
 
 }
 
-return graphCanvas;
+function findNeighbors(nodes, edges, node_obj) {
+    //var node_obj = nodes.find(function (n) { return n.label == name });
+    var nb_l = edges.filter(function(e) { return e.source == node_obj; })
+            .map(function (n) { return n.target; });
+    var nb_r = edges.filter(function(e) { return e.target == node_obj; })
+            .map(function (n) { return n.source; });
+    var neighbors = nb_l;
+    for (i in nb_r) {
+        if (! nb_r[i] in neighbors)
+           neighbors.push(nb_r[i]) 
+    }
+    return neighbors;
+
+}
+
+define(['d3'], function (d3) {
+    return graphCanvas;
 });
+
+
