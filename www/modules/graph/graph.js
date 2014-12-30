@@ -4,13 +4,16 @@ function go(viz, dispatch) {
 
     var graph;
 
-    d3.select("#dataFile").on("change", function() {
-        d3.select(viz).selectAll(".container *").remove();
-        var file = "data/" + d3.event.target.value
-        d3.text(file, "text/plain", main);
-    });
+
+    var opts = ["english-brown_50_9_nearest_neighbors.txt",
+        "english-brown_100_9_nearest_neighbors.txt",
+        "english-brown_1000_9_nearest_neighbors.txt"]
+
+    d3.select("#dataFile").call(filepicker, opts, main);
 
     function main(data) {
+
+        d3.select(viz).selectAll(".container *").remove();
 
         var g = adjListToGraph(data.split('\n'));
 

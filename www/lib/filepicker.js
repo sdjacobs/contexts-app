@@ -17,22 +17,22 @@ function handleFileSelect(evt, callback) {
 
 function filepicker(select, options, callback) {
 
-    select.html('<option selected disabled hidden value=''></option>')
+    select.html("<option selected disabled hidden value=''></option>")
     
     options.forEach(function(d) {
         select.append('option')
             .text(d)
-    }
+    });
 
 
     select.append('option')
-        .text('Pick your own...')
-        .value('picker')
+        .text('Pick a local file...')
+        .attr('value', 'picker');
 
     select.on("change", function() {
         var v = d3.event.target.value;
         if (v == "picker") {
-            inp.onclick = function(e) { handleFileSelect(e, callback); };
+            inp.onchange = function(e) { handleFileSelect(e, callback); };
             inp.click();
         }
         else {
