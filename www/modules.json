@@ -4,10 +4,10 @@
         "name": "Graph",
         "page": "modules/graph/graph.html",
         "imports": [],
-        "exports": ["wordlist"],
+        "exports": ["wordlist", "graph"],
         "height": "80%",
         "width": "40%",
-        "deps": ["modules/graph/graph.js"] 
+        "deps": ["modules/graph/graph.js"]
 
     },
     {
@@ -17,6 +17,13 @@
         "exports": [],
         "height": 400,
         "width": 200
+    },
+    {
+        "name": "Chinese whispers",
+        "page": "modules/whispers/index.html",
+        "deps": ["modules/whispers/app.js"],
+        "imports": ["graph"],
+        "exports": ["groups"]
     }
 ]
 

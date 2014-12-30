@@ -5,7 +5,7 @@ define(function (require) {
     var interact = require('interact');
    
     var colors = d3.scale.category10();
-    function dialog(node) { 
+    function initdialog(node) { 
 
 
         var obj = {
@@ -54,10 +54,25 @@ define(function (require) {
         }
     }
    
-    dialog('.draggable')
+    initdialog('.draggable')
+
+    function dialog(elem) {
+        var d = interact('.draggable')
+        //var y = elem.node().querySelectorAll('select, input, button, .container')
+        /*for (var i = 0; i < y.length; i++){
+                y[i].onmouseover = function() { d.draggable(false) }
+                y[i].onmouseout = function() { d.draggable(true) }
+        }*/
+        elem.selectAll('select, input, button, .container')
+            .each(function() {
+                this.onmouseover = function() { d.draggable(false) }
+                this.onmouseout = function() { d.draggable(true) }
+            });
+
+    }
 
     d3.json("modules.json", function(modules) {
-        d3.select("#menu").selectAll("li")
+        d3.select("#menu").select("div").selectAll("li")
            .data(modules).enter()
             .append("li")
             .append("a")
@@ -65,36 +80,41 @@ define(function (require) {
             .text(function(d) { return d.name })
             .on("click", display)
             .append("br")
+
+        var types = d3.set()
+        modules.forEach(function(d) {
+            d.exports.forEach(function(f) { types.add(f); });
+            d.imports.forEach(function(f) { types.add(f); });
+        });
+        var dispatch = d3.dispatch("graph")
+
+        function display(module) {
+            d3.xhr(module.page, "text/html", function(req) {
+                var menu = d3.select("#menu").append("div")
+                    .html(req.response)
+                    .attr("class", "draggable")
+                    .attr("style", "width: 300px; height: 200px;")
+                    .attr("name", module.name)
+                
+                dialog(menu)
+
+                
+                var viz = d3.select("#content").append("div")
+                    .attr("class", "draggable")
+                    .attr("style", "width:500px;height:500px")
+                    .attr("name", module.name + " viz")
         
+                var v = viz.append("div")
+                    .attr("class", "container")
+                    .attr("style", "width:100%; height:95%;")
+                    .style("background-color", 'white')
+                    .style("color", "black")
+                    
+                dialog(viz);
+
+                require(module.deps, function(f) { f(v.node(), dispatch); });
+            });
+        }
     });
 
-
-    function display(module) {
-        
-        d3.xhr(module.page, "text/html", function(req) {
-            var div = document.createElement("div")
-            div.innerHTML = req.response;
-            
-            div.setAttribute("class", "draggable");
-            
-            div.setAttribute("style", "width: 300px; height: 200px;")
-            document.body.appendChild(div);
-            dialog(div)
-            
-            var viz = d3.select("body")
-                        .append("div")
-                        .attr("class", "draggable")
-                        .attr("style", "width:500px;height:500px;position:absolute;right:0;top:0;")
-            
-            var v = viz
-                        .append("div")
-                        .attr("class", "container")
-                        .attr("style", "width:100%; height:100%;")
-                        .style("background-color", 'white')
-                        
-            dialog(viz.node());
-
-            require(module.deps, function(f) { f(v.node()); });
-        });
-    }
 });

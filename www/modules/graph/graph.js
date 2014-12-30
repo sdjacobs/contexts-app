@@ -1,11 +1,11 @@
-function go(viz) {
+function go(viz, dispatch) {
 
     var makeGraph = graphCanvas;
 
     var graph;
 
     d3.select("#dataFile").on("change", function() {
-        d3.select("#content").selectAll("*").remove();
+        d3.select(viz).selectAll(".container *").remove();
         var file = "data/" + d3.event.target.value
         d3.text(file, "text/plain", main);
     });
@@ -60,6 +60,7 @@ function go(viz) {
     d3.select("#startGraph")
         .on("click", function() {
             graph.start()
+            dispatch.graph({"graph": graph, "container": viz})
         });
 
     d3.select("#drawLabels")
