@@ -124,6 +124,6 @@ function go(viz, dispatch) {
 }
 
 
-define(['d3', 'graphCanvas', 'graphSVG'], function(d3, graphCanvas, graphSVG) { 
+define(['d3', 'graphCanvas', 'graphSVG', 'filepicker'], function(d3, graphCanvas, graphSVG, filepicker) { 
     return go;
 });
