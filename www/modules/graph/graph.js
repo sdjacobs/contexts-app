@@ -63,7 +63,8 @@ function go(viz, dispatch) {
     d3.select("#startGraph")
         .on("click", function() {
             graph.start()
-            dispatch.graph({"graph": graph, "container": viz})
+            var type = (makeGraph == graphCanvas) ? "canvas" : "svg";
+            dispatch.graph({"graph": graph, "container": viz, "type": type})
         });
 
     d3.select("#drawLabels")

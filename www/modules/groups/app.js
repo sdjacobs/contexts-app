@@ -50,9 +50,19 @@ define(["d3", "filepicker", "chinese-whispers"], function(d3, filepicker, makeWh
         
         var node = d3.select(controls.container).selectAll(".node"),
             color = d3.scale.category20();
-        controls.color = (function() {
-            node.style("fill", function(d) { return color(d.group); })
-        })
+        if (data.type == "svg") {
+            controls.color = (function() {
+                node.style("fill", function(d) { return color(d.group); })
+            })
+        }
+        else {
+            controls.color = (function() {
+                controls.nodes.forEach(function(d) {
+                    d.color = color(d.group);
+                });
+                controls.graph.redraw();
+            });
+        }
 
         if (controls.groupsByWord)
             updateGroups()
