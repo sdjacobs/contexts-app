@@ -19,9 +19,9 @@
         "width": 200
     },
     {
-        "name": "Chinese whispers",
-        "page": "modules/whispers/index.html",
-        "deps": ["modules/whispers/app.js"],
+        "name": "Groups",
+        "page": "modules/groups/index.html",
+        "deps": ["modules/groups/app.js"],
         "imports": ["graph"],
         "exports": ["groups"]
     }
