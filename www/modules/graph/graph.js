@@ -72,23 +72,35 @@ function go(viz, dispatch) {
             graph.labels(d3.event.target.checked);
         });
 
-    d3.select("#searchBox")
-        .on("change", function() {
-            var x = d3.event.target.value;
+    d3.select("#findNode")
+        .on("click", function() {
+            var x = document.querySelector("#searchBox").value;
             var node = graph.nodes().find(function(d) { return d.label == x });
             if (!node)
                 return;
 
-            if (graph.selectedNodes().indexOf(node) > 0)
-                graph.unSelectNode(node)
-            else
-                graph.selectNode(node)
+            var n = document.querySelector("#numNeighbors").value;
+            graph.selectNode(node, parseInt(n))
 
-            if (window.dispatch)
-                window.dispatch.export({ name: "wordlist",
-                                        value: graph.selectedNodes().map(function(d) { return d.label }) 
-                                       });
+            updateList();
+        
         });
+
+    function updateList() {
+        var list = d3.select("#selectedNodes");
+        list.selectAll("*").remove();
+        list.selectAll("li")
+             .data(graph.selectedNodes()).enter()
+            .append("li")
+            .html(function(d) { return d.label + " <a href='#'>x</a>"; })
+            .select("a")
+                .on("click", function(d) { graph.unSelectNode(d); updateList() });
+
+        var words = graph.selectedNodes().map(function(d) { return d.label })
+        dispatch.wordlist(words);
+    }
+            
+
 
 
     function adjListToGraph(adj) {

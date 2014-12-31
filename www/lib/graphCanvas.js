@@ -55,7 +55,7 @@ function graphCanvas() {
             .on("end", function() { zoom.on("zoom", redraw) })
             .on("start", function() { zoom.on("zoom", undefined) })
             .start()
-        window.requestAnimationFrame(redraw)
+                window.requestAnimationFrame(redraw)
         return graph;
     }
 
@@ -84,7 +84,7 @@ function graphCanvas() {
         nodes.forEach(function(d) {
             context.beginPath();
             context.arc(s * d.x + t[0], s * d.y + t[1], s * (d.size || 8), 0, 2 * Math.PI);
-            context.fillStyle = d.color ||  "black";
+            context.fillStyle = d.color;
             context.fill();
         });
 
@@ -106,20 +106,34 @@ function graphCanvas() {
         redraw()
     }
 
-    graph.selectNode = function(node) {
-        
+
+    /* NOTE: Why don't we color gen0 with C0, gen1 with C1=lighter(C0), gen2 with C2=lighter(C1), and so forth?
+     * 1) What if a node is in gen1 and gen2 ?
+     * 2) Colors decay to white too quickly. Need a better function than "make 1.2x brighter" 
+     *    (which I guess makes colors exponentially brighter each generation...)
+     */
+
+    graph.selectNode = function(node, ngen) {
+    
+        function colorGenerations(n, ngen, color) {
+            if (ngen == 0)
+                return;
+            if (!n.neighbors)
+                n.neighbors = findNeighbors(nodes, edges, n);
+            n.neighbors.forEach(function(d) {
+                if (d != node) {
+                    d.color = color;
+                    colorGenerations(d, ngen-1, color);
+                }
+            });
+        }
+
         selectedNodes.push(node)
-        node.oldcolor = node.color;
         node.color = d3.hsl(colors());
+        node.selectedGens = ngen
 
-        if (!node.neighbors)
-            node.neighbors = findNeighbors(nodes, edges, node)
+        colorGenerations(node, ngen, node.color.brighter(1.2));
 
-        node.neighbors.forEach(function(d) {
-            d.oldcolor = d.color
-            d.color = node.color.brighter(1.2)
-        })
-      
         zoom.scale(1)
         zoom.translate([width/2 - node.x, height/2 - node.y])
         
@@ -128,11 +142,20 @@ function graphCanvas() {
     }
 
     graph.unSelectNode = function(node) {
-        node.color = node.oldcolor;
-        node.neighbors.forEach(function(d) {
-            d.color = d.oldcolor;
-        });
-        selectedNodes.remove(node);
+        function uncolorGenerations(node, ngen) {
+            node.color = node.oldcolor;
+            if (ngen > 0)
+                node.neighbors.forEach(function(d) {
+                    uncolorGenerations(d, ngen-1);
+                });
+        }
+
+        uncolorGenerations(node, node.selectedGens);
+       
+        var i = selectedNodes.findIndex(function(x) { return x == node });
+        if (i >= 0)
+            selectedNodes.splice(i, 1);
+
         if (!force.alpha())
             redraw();
     }
@@ -142,6 +165,10 @@ function graphCanvas() {
             return nodes;
         else
             nodes = _;
+        nodes.forEach(function(d) {
+            d.color = "black";
+            d.oldcolor = "black";
+        });
         return graph;
     }
 
