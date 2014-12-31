@@ -5,8 +5,6 @@
         "page": "modules/graph/graph.html",
         "imports": [],
         "exports": ["wordlist", "graph"],
-        "height": "80%",
-        "width": "40%",
         "deps": ["modules/graph/graph.js"]
 
     },
@@ -15,8 +13,7 @@
         "page": "modules/table/table.html",
         "imports": ["wordlist"],
         "exports": [],
-        "height": 400,
-        "width": 200
+        "deps": ["modules/table/app.js"]
     },
     {
         "name": "Groups",

@@ -15,7 +15,12 @@ function handleFileSelect(evt, callback) {
     reader.readAsText(f);
 }
 
-function filepicker(select, options, callback) {
+function filepicker(select, options, callback_, process) {
+
+    if (process)
+        callback = (function(x) {return callback_(process(x)) });
+    else
+        callback = callback_;
 
     select.html("<option selected disabled hidden value=''></option>")
     
