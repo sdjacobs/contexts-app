@@ -30,7 +30,7 @@ define(["d3", "filepicker", "chinese-whispers"], function(d3, filepicker, makeWh
     });
 
 
-    d3.select("#groupsFile").call(filepicker, ["12dicts-categories.csv"], loadData);
+    d3.select("#groupsFile").call(filepicker(), ["12dicts-categories.csv"], loadData);
     function loadData(x) {
         var data = d3.csv.parse(x);
         controls.groupsByWord = {}

@@ -9,7 +9,7 @@
 
     },
     {
-        "name": "Table",
+        "name": "Contexts",
         "page": "modules/table/table.html",
         "imports": ["wordlist"],
         "exports": [],
