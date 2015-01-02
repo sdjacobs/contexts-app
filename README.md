@@ -11,9 +11,9 @@ determine categorization (right now, just Chinese Whispers)
 
 We use the following technologies:
 
-* [D3](d3js.org) is a data visualization library and provides some general-purpose Javascript programming tools.
-* [require.js](requirejs.org) (NEW) is a Javascript framework that allows for on-demand loading of Javascript modules. This web project is forked from the require.js example of a single-page app, [here](https://github.com/volojs/create-template).
-* [interact.js](interactjs.io) (NEW) provides the drag-and-drop and resizing features.
+* [D3](http://d3js.org) is a data visualization library and provides some general-purpose Javascript programming tools.
+* [require.js](http://requirejs.org) (NEW) is a Javascript framework that allows for on-demand loading of Javascript modules. This web project is forked from the require.js example of a single-page app, [here](https://github.com/volojs/create-template).
+* [interact.js](http://interactjs.io) (NEW) provides the drag-and-drop and resizing features.
 
 This web project has the following setup:
 
@@ -28,6 +28,8 @@ This web project has the following setup:
 * tools/ - the build tools to optimize the project.
 
 The "\*" notes aspects of the setup that were NOT part of the original template.
+
+The following comes from the template:
 
 To optimize, run:
 
