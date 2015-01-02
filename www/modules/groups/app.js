@@ -1,4 +1,4 @@
-define(["d3", "filepicker", "chinese-whispers"], function(d3, filepicker, makeWhispers) {
+define(["d3", "app/filepicker", "app/chinese-whispers"], function(d3, filepicker, makeWhispers) {
 
     
     var controls = {};

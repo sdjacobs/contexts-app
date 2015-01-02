@@ -1,4 +1,4 @@
-define(["d3", "partial-graph"], function(d3, partialGraph) {
+define(["d3", "app/partial-graph"], function(d3, partialGraph) {
     return (function(viz, dispatch) {
       
         var inputs = d3.selectAll("#p_seedword, #p_nNeighbors, #p_nGenerations"),

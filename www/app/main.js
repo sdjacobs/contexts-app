@@ -4,7 +4,8 @@ define(function (require) {
     
     var interact = require('interact');
    
-    var colors = d3.scale.category10();
+    var colors = d3.scale.category10(),
+        nextColor = function() { return colors(colors.domain().length); };
 
     /* Initialize draggable behavior for draggable class */
 
@@ -43,12 +44,12 @@ define(function (require) {
         });
 
 
-    d3.select('.draggable').style("background-color", colors(colors.domain().length));
+    d3.select('.draggable').style("background-color", nextColor());
     
 
   
     /* Make a selection into a dialog. Very simple since the behavior above applies to the whole class. */  
-    function dialog(elem) {
+    function dialog(elem, color) {
         elem.attr("class", "draggable")
         var d = interact('.draggable')
         elem.selectAll('select, input, button, .container')
@@ -56,7 +57,7 @@ define(function (require) {
                 this.onmouseover = function() { d.draggable(false) }
                 this.onmouseout = function() { d.draggable(true) }
             });
-        elem.style("background-color", colors(colors.domain().length));
+        elem.style("background-color", color);
 
         elem.append("button")
             .attr("style", "position: absolute; top:0; right:0;")
@@ -99,13 +100,14 @@ define(function (require) {
 
         function display(module) {
             d3.xhr(module.page, "text/html", function(req) {
+
+                var color = nextColor();
+
                 var menu = d3.select("#menu").append("div")
                     .html(req.response)
                     .attr("style", "width: 300px; height: 200px;")
                     .attr("name", module.name)
-                    .call(dialog)
-                
-
+                    .call(dialog, color)
                 
                 var viz = d3.select("#content").append("div")
                     .attr("style", "width:500px;height:500px")
@@ -117,7 +119,7 @@ define(function (require) {
                     .style("background-color", 'white')
                     .style("color", "black")
                   
-                viz.call(dialog); 
+                viz.call(dialog, color); 
 
                 require(module.deps, function(f) { f(v.node(), dispatch); });
             });

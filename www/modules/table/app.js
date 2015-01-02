@@ -1,4 +1,4 @@
-define(['d3', 'filepicker'], function(d3, filepicker) {
+define(['d3', 'app/filepicker'], function(d3, filepicker) {
     return (function(viz, dispatch) {
 
         d3.select("#t_dataFile").call(filepicker(), ["brown-contexts.json"], main, JSON.parse);
