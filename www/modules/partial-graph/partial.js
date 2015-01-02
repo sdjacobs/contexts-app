@@ -1,11 +1,11 @@
-define(["d3"], function(d3) {
+define(["d3", "partial-graph"], function(d3, partialGraph) {
     return (function(viz, dispatch) {
       
         var graph,
             inputs = d3.selectAll("#p_seedword, #p_nNeighbors, #p_nGenerations");
 
         dispatch.on("graph", function(g) {
-            graph = g;
+            graph = g.graph;
             inputs.attr("disabled", null);
         });
 
@@ -20,12 +20,16 @@ define(["d3"], function(d3) {
             var allNodes = graph.nodes()
             var allEdges = graph.edges()
             var x = allNodes.find(function(d) { return d.label == word; });
+            if (!x) {
+                alert("selected node not found")
+                return;
+            }
             var queue = [{"node":x, "ngens":nGenerations, "id": 0}]
             var nodes = [], links = []
             var id = 0
             while (queue.length > 0) {
                 var d = queue.pop()
-                nodes.push({"label": d.node.label, "id": d.id, "size":500})
+                nodes.push({"label": d.node.label, "id": d.id, "size": (d.ngens+1)*10})
                 
                 if (d.ngens == 0)
                     continue;
@@ -47,8 +51,9 @@ define(["d3"], function(d3) {
                 .nodes(nodes)
                 .links(links)
 
-           d3.selectAll(".view4 *").remove()
-           d3.select(".view4").call(partial);
+           var view = d3.select(viz);
+           view.selectAll("*").remove()
+           view.call(partial);
         }
    
     });

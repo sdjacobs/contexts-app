@@ -21,7 +21,14 @@
         "deps": ["modules/groups/app.js"],
         "imports": ["graph"],
         "exports": ["groups"]
-    }
+    },
+    {
+        "name": "Partial graph",
+        "page": "modules/partial-graph/partial.html",
+        "deps": ["modules/partial-graph/partial.js"],
+        "imports": ["graph"],
+        "exports": []
+    }        
 ]
 
             

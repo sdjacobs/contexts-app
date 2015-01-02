@@ -205,3 +205,7 @@ function partialGraph() {
     return graph;
 
 }
+
+define(['d3'], function (d3) { 
+    return partialGraph; 
+});
