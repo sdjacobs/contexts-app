@@ -9,7 +9,7 @@ function go(viz, dispatch) {
         "english-brown_100_9_nearest_neighbors.txt",
         "english-brown_1000_9_nearest_neighbors.txt"]
 
-    d3.select("#dataFile").call(filepicker, opts, main);
+    d3.select("#dataFile").call(filepicker(), opts, main);
 
     function main(data) {
 

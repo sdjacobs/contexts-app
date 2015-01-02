@@ -166,8 +166,9 @@ function graphCanvas() {
         else
             nodes = _;
         nodes.forEach(function(d) {
-            d.color = "black";
-            d.oldcolor = "black";
+            if (!d.color)
+                d.color = "black";
+            d.oldcolor = d.color;
         });
         return graph;
     }

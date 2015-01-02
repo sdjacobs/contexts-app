@@ -80,7 +80,7 @@ define(function (require) {
             d.exports.forEach(function(f) { types.add(f); });
             d.imports.forEach(function(f) { types.add(f); });
         });
-        var dispatch = d3.dispatch("graph")
+        var dispatch = d3.dispatch.apply(this, types.values())
 
         function display(module) {
             d3.xhr(module.page, "text/html", function(req) {
