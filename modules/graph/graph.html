@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+#numNeighbors {
+    width: 30px;
+}
+
+#searchBox {
+    width: 60px;
+}
+</style>
+<select id="dataFile">
+</select><br>
+
+<button type="button" id="startGraph">Start</button> <br>
+<button type="button" id="stopGraph">Stop</button><br>
+<button type="button" id="centerGraph">Center</button> <br>
+<select id="graphType">
+    <option value="canvas">Canvas</option>
+    <option value="svg">SVG</option>
+</select> <br>
+<input type="checkbox" id="drawLabels">Draw labels</input> <br>
+
+<!-- Find-a-node box -->
+Find:
+<input type="text" id="searchBox"></input> 
+<input type="number" min="0" max="100" value="1" id="numNeighbors"></input> 
+<button id="findNode">Go</button>
+<br>
+
+<ul id="selectedNodes"></ul>
+
+
+
+
