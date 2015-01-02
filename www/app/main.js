@@ -82,6 +82,21 @@ define(function (require) {
         });
         var dispatch = d3.dispatch.apply(this, types.values())
 
+        var globals = {};
+        types.values().forEach(function(o) {
+            dispatch.on(o + ".main", function(d) {
+                globals[o] = d;
+            });
+        });
+
+        /* Register an event handler, AND, if required object already exists, use it! */
+        dispatch.on_init = function(evt, callback) {
+            dispatch.on(evt, callback);
+            var e = evt.split('.')[0]
+            if (globals[e])
+                callback(globals[e]);
+        }
+
         function display(module) {
             d3.xhr(module.page, "text/html", function(req) {
                 var menu = d3.select("#menu").append("div")

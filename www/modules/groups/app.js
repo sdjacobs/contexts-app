@@ -135,7 +135,7 @@ define(["d3", "filepicker", "chinese-whispers"], function(d3, filepicker, makeWh
 
     return function(viz, dispatch) {
         controls.viz = viz;
-        dispatch.on("graph", getGraph);
+        dispatch.on_init("graph", getGraph);
     };
 
 });

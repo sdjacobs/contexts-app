@@ -4,7 +4,7 @@ define(["d3", "partial-graph"], function(d3, partialGraph) {
         var inputs = d3.selectAll("#p_seedword, #p_nNeighbors, #p_nGenerations"),
             partial = partialGraph();
 
-        dispatch.on("graph", function(g) {
+        dispatch.on_init("graph", function(g) {
             //var graph = g.graph;
             inputs.attr("disabled", null);
             partial.nodes(g.graph.nodes())

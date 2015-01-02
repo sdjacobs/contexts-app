@@ -42,7 +42,7 @@ define(['d3', 'filepicker'], function(d3, filepicker) {
                 });
 
             
-            dispatch.on("wordlist", function(words) {
+            dispatch.on_init("wordlist", function(words) {
                 d3.select("#t_selectedWordsExported").text(words).datum(words);
                 if (document.querySelector("#t_selectExported").checked)
                     updateTable(words);
