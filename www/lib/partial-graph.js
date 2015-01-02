@@ -1,20 +1,26 @@
 function partialGraph() {
     
-    /* Graph svg */
 
+    /* "mini" nodes and links */
     var nodes, links;
+
+    /* nodes and links from big graph */
+    var allNodes, allLinks;
+
+    var view;
 
    	function node_radius(d) {
         var x = Math.pow(40.0 * d.size, 1/3);
-        if (isNaN(x)) {
-            console.log(d)
-            console.log(x)
-            thunk()
-        }
         return x
     }
  
-    var graph = function(view) {
+    var graph = (function(v) {
+        view = v;
+    });
+
+    graph.draw = function() {
+
+        view.selectAll("*").remove();
 
        var width = parseInt(view.style("width")), height = parseInt(view.style("height"));
 
@@ -99,18 +105,50 @@ function partialGraph() {
    
     graph.nodes = function(_) {
         if (!arguments.length)
-            return nodes;
+            return allNodes;
         else
-            nodes = _;
+            allNodes = _;
         return graph;
     }
 
     graph.links = function(_) {
         if (!arguments.length)
-            return links;
+            return allLinks;
         else
-            links = _;
+            allLinks = _;
         return graph;
+    }
+
+    
+    graph.makePartialGraph = function (word, nNeighbors, nGenerations) {
+        var x = allNodes.find(function(d) { return d.label == word; });
+        if (!x) {
+            alert("selected node not found")
+            return;
+        }
+        var queue = [{"node":x, "ngens":nGenerations, "id": 0}];
+        nodes = [], links = [] // these are globals!
+        var id = 0
+        while (queue.length > 0) {
+            var d = queue.pop()
+            nodes.push({"label": d.node.label, "id": d.id, "size": (d.ngens+1)*10})
+            
+            if (d.ngens == 0)
+                continue;
+
+            var neighbors = findNeighbors(allNodes, allLinks, d.node)
+            neighbors = neighbors.slice(0, nNeighbors)
+            neighbors.forEach(function(x) {
+                var tar = nodes.findIndex(function(d) { return d.label == x.label })
+                if (tar == -1) {
+                    id++
+                    queue.push({"node": x, "ngens": d.ngens - 1, "id": id})
+                    tar = id
+                }
+                links.push({"source": d.id, "target":tar})
+            }); 
+
+        }
     }
 
 
