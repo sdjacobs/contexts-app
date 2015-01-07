@@ -72,36 +72,47 @@ function go(viz, dispatch) {
             graph.labels(d3.event.target.checked);
         });
 
-    d3.select("#findNode")
-        .on("click", function() {
+   
+    d3.select("#searchBox")
+        .on("change", function() {
             var x = document.querySelector("#searchBox").value;
-            var node = graph.nodes().find(function(d) { return d.label == x });
-            if (!node)
-                return;
-
-            var n = document.querySelector("#numNeighbors").value;
-            graph.selectNode(node, parseInt(n))
-
-            updateList();
-        
-        });
-
-    function updateList() {
-        var list = d3.select("#selectedNodes");
-        list.selectAll("*").remove();
-        list.selectAll("li")
-             .data(graph.selectedNodes()).enter()
-            .append("li")
-            .html(function(d) { return d.label + " <a href='#'>x</a>"; })
-            .select("a")
-                .on("click", function(d) { graph.unSelectNode(d); updateList() });
-
-        var words = graph.selectedNodes().map(function(d) { return d.label })
-        dispatch.wordlist(words);
-    }
             
+            var unselect = {}
+            graph.selectedNodes().forEach(function(node) {
+               unselect[node.label] = node;
+            }); 
+            
+            x.split(',').forEach(function(blob) {
+                var d = blob.split(':')
 
+                var word = d[0].trim()
+                if (!word || word == "")
+                    return;
+                var ngen = parseInt(d[1]) || 1,
+                    color = d[2] ? d[2].trim() : undefined;
+                
+                var node = graph.selectedNodes().find(function(d) { return d.label == word });
+                if (node)
+                    if (node.selectedGens == ngen) {
+                        unselect[node.label] = undefined;
+                        return;
+                    }
+                    else 
+                        graph.unSelectNode(node)
+                else
+                    node = graph.nodes().find(function(d) { return d.label == word });
+               
+                if (node) {
+                    graph.selectNode(node, ngen, color);
+                    unselect[node.label] = undefined;
+                }  
+            });
 
+            for (var label in unselect)
+                if (unselect.hasOwnProperty(label) && unselect[label])
+                    graph.unSelectNode(unselect[label])
+
+        });
 
     function adjListToGraph(adj) {
         var nodes = [],

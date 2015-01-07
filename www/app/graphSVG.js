@@ -146,8 +146,9 @@ function graphSVG() {
 
     }
 
-    graph.unSelectNode = function(node) {
-        node.style("fill", "blue");
+    graph.unSelectNode = function(d) {
+        var node = selectNode(d.label);
+        node.style("fill", d.oldcolor);
         selectedNodes.remove(node)
     }
 

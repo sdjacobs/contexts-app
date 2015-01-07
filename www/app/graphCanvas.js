@@ -113,7 +113,7 @@ function graphCanvas() {
      *    (which I guess makes colors exponentially brighter each generation...)
      */
 
-    graph.selectNode = function(node, ngen) {
+    graph.selectNode = function(node, ngen, color) {
     
         function colorGenerations(n, ngen, color) {
             if (ngen == 0)
@@ -129,7 +129,7 @@ function graphCanvas() {
         }
 
         selectedNodes.push(node)
-        node.color = d3.hsl(colors());
+        node.color = d3.hsl(color || colors());
         node.selectedGens = ngen
 
         colorGenerations(node, ngen, node.color.brighter(1.2));
