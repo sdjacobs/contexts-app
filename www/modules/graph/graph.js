@@ -112,6 +112,8 @@ function go(viz, dispatch) {
                 if (unselect.hasOwnProperty(label) && unselect[label])
                     graph.unSelectNode(unselect[label])
 
+            dispatch.wordlist(graph.selectedNodes().map(function(d) { return d.label; }));
+
         });
 
     function adjListToGraph(adj) {
