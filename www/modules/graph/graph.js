@@ -151,6 +151,6 @@ function go(viz, dispatch) {
 }
 
 
-define(['d3', 'app/graphCanvas', 'app/graphSVG', 'app/filepicker'], function(d3, graphCanvas, graphSVG, filepicker) { 
+define(['d3', 'app/graphCanvas', 'app/graphSVG', 'app/filepicker', 'app/compatibility'], function(d3, graphCanvas, graphSVG, filepicker) { 
     return go;
 });
