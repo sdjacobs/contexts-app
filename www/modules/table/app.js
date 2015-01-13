@@ -1,7 +1,20 @@
 define(['d3', 'app/filepicker'], function(d3, filepicker) {
+
+    function parseContextsTsv(data) {
+        var d = {};
+        data.split('\n').forEach(function(line) {
+            if (line.startsWith('#'))
+                return
+            var contexts = line.split('\t')
+            d[contexts[0]] = contexts.splice(1).sort();
+        });
+        return d;
+    }
+
     return (function(viz, dispatch) {
 
-        d3.select("#t_dataFile").call(filepicker(), ["brown-contexts.json"], main, JSON.parse);
+
+        d3.select("#t_dataFile").call(filepicker(), ["english-brown_1000_from-word-to-contexts.txt"], main, parseContextsTsv);
 
 
         function main(contexts) {
